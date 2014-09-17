@@ -11,7 +11,7 @@ CC2    = g++
 FLAGS = -Wall -O3
 LIBS   = -lm
 
-main: BorgExec LakeProblem4obj_control Random1000SOWs
+main: LakeProblem4obj_control Random1000SOWs BorgExec
 
 clean:
 	rm -f moeaframework.o libmoea.a BorgExec LakeProblem4obj_control Random1000SOWs
@@ -21,12 +21,11 @@ libmoea.a: moeaframework.c moeaframework.h
 	ar rcs libmoea.a moeaframework.o
 	rm -f moeaframework.o
 
-BorgExec: libmoea.a borg.c borg.h
-	${CC} ${FLAGS} -o BorgExec frontend.c borg.c mt19937ar.c -L. -lmoea $(LIBS)
-
 LakeProblem4obj_control: libmoea.a LakeProblem_4obj_1const_Control.cpp
 	$(CC2) $(FLAGS) -o LakeProblem4obj_control LakeProblem_4obj_1const_Control.cpp -L. -lmoea $(LIBS)
 
 Random1000SOWs: libmoea.a Random1000SOWs.cpp
 	$(CC2) $(FLAGS) -I ../../../boost_1_55_0 -o Random1000SOWs Random1000SOWs.cpp -L. -lmoea $(LIBS)
 
+BorgExec: libmoea.a borg.c borg.h
+	${CC} ${FLAGS} -o BorgExec frontend.c borg.c mt19937ar.c -L. -lmoea $(LIBS)

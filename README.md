@@ -7,6 +7,8 @@ Contents:
 * `MakefileLake`: makefile that compiles the lake model, Borg and the SOWs generating code
 * `Random1000SOWs.cpp`: code written by Riddhi in C++ to generate SOW files for 9 states of the world
 that may be specified on line 316 of the lake model code
+* `moeaframework.c` and `moeaframework.h`: provides methods included in the LakeProblem C++ code for use with the MOEAFramework. 
+These are necessary to compile the code as written. 
 
 To compile and run:
 

@@ -16,7 +16,7 @@ To compile and run:
 
 * Download the Borg source code. Put all Borg and Lake Source in the examples subdirectory of the MOEAFramework directory.
 
-* Compile the Lake Problem Executable: `cd MOEA\ Framework/MOEAFramework-2.1/examples` && `make -f MakefileLake`
+* Compile the Lake Problem Executable: `cd MOEA\ Framework/MOEAFramework-2.1/examples` and `make -f MakefileLake`
 
 * Move the Borg and Lake Problem executables into the directory in which you want to run them.  Please note you can compile Borg 
 separately from the lake model if desired, but I suggest putting it into the MOEAFramework folder so Borg, the SOW generator, and the lake model can be compiled 

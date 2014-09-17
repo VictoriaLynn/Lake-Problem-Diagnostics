@@ -18,14 +18,12 @@ To compile and run:
 
     Compile the Lake Problem Executable: cd MOEA\ Framework/MOEAFramework-2.1/examples && make -f MakefileLake
 
-    Move the Borg and Lake Problem executables into the directory from which you want to run them.  Please note you can compile Borg 
-    separately from the lake model if desired but I suggest putting it into the MOEAFramework folder so Borg and the lake model can be compiled 
+    Move the Borg and Lake Problem executables into the directory in which you want to run them.  Please note you can compile Borg 
+    separately from the lake model if desired, but I suggest putting it into the MOEAFramework folder so Borg, the SOW generator, and the lake model can be compiled 
     simultaneously with the provided makefile.   
 
 *Before you can use the lake model, you will need to generate SOW files.  This can be done simply by typing
 ./Random1000SOWs.exe and moving the desired SOW file to the directory in which you are performing the optimization.
-
-in the command line.
 
 *To optimize the lake problem with Borg use the following command
 ./BorgExec.exe -v 100 -o 4 -c 1 \

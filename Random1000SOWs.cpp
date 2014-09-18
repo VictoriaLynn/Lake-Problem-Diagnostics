@@ -81,7 +81,6 @@ int main(int argc, char* argv[])
       const char *outfname = outfilename.c_str();
       FILE *outfile;
       outfile   = fopen(outfname,"w");
-      double trial;
 	
       if (outfile==NULL) perror("Error opening file");
       else 

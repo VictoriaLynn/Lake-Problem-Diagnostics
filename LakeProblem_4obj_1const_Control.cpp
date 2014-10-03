@@ -7,6 +7,10 @@
    Adapted by Tori Ward, July 2014 
    Cornell University
    vlw27@cornell.edu
+   
+   Adapted by Yu Li, September 2014 
+   Politecnico di Milano
+   likymice@gmail.com
 
    A multi-objective represention of the lake model from Carpenter et al., 1999
    This simulation is designed for optimization with either Borg or the MOEAFramework.
@@ -48,7 +52,7 @@
 
 Additional features:
 1. Bounds for decision vector (0,0.1)
-2. Precision - upto 3 digits
+2. Precision - up to 3 digits
 3. Annual control -100 total decision variables
 */
 
@@ -62,13 +66,13 @@ Additional features:
 #include "moeaframework.h"
 using namespace std;
 
-#define PI 3.14159265358979323846
-#define nDays 100
-#define q 2
-#define b 0.42
-#define alpha 0.4
-#define beta 0.08
-#define delta 0.98
+#define PI      3.14159265358979323846
+#define nDays   100
+#define q 	    2
+#define b 	    0.42
+#define alpha   0.4
+#define beta    0.08
+#define delta   0.98
 #define samples 100
 
 //define reliability related parameters
@@ -85,16 +89,19 @@ double passInitX= 0;
 int nobjs;
 int nvars;
 int nconsts;
-double nat_flowmat [10000][nDays];//explain what this does once I know
+double nat_flowmat [10000][nDays]; // create a matrix of [ 10000 x nDays ]
 
 void lake_problem(double* vars, double* objs, double* consts) 
 {
-  //run the stochastic case now for objective function 3
-  double * oftime1 = new double [nDays];    // Phosphorus in the lake
-  double * ofs2 = new double [samples];    // benefit from pollution
-  double * ofs3 = new double [samples];    // reliability, Prob(Ph>Pcrit)
-  double * ofs4 = new double [samples]; //inertia, Prob(maintain inertia)
+  // opt 1 - declare the cumulated step indicators (4) 
+  
+    //run the stochastic case now for objective function 3
+  double * oftime1 = new double [nDays]  ;    // Phosphorus in the lake
+  double * ofs2    = new double [samples];    // benefit from pollution
+  double * ofs3    = new double [samples];    // reliability, Prob(Ph>Pcrit)
+  double * ofs4    = new double [samples];    // inertia, Prob(maintain inertia)
 
+  // opt 2 - initialize the indicators 
   for (int sample=0; sample<samples;sample++)
     {
       ofs2[sample]    = 0.0;
@@ -106,7 +113,9 @@ void lake_problem(double* vars, double* objs, double* consts)
   {
     oftime1[day] = 0;
   }
-
+  
+  // opt 3 - define and initialize the inflow line values stochastically
+  
   int linetouse [samples];
   srand (time(NULL)); //gives PRNG a seed based on time
   for (int sample=0; sample<samples;sample++) {
@@ -114,27 +123,33 @@ void lake_problem(double* vars, double* objs, double* consts)
     //choose 100 of 10,000 available inflow value lines
     linetouse[sample] = rand() % 10000;
   }
+  
+   
+  // opt 4 - simulate the dynamic lake evolution for all samples 
   for (int sample=0; sample<samples;sample++)
     {   
+	
+	// opt 4.1 - stochastically draw the natural flow time-series
+	
       double *nat_flow = new double [nDays];
       int index = linetouse[sample];
       // get the random natural flow from the States of the world file
       //each line of SOW file covers 100 days of inflow
       for (int i=0;i<nDays;i++){
-	       nat_flow[i] = nat_flowmat[index][i];
+	       nat_flow[i] = nat_flowmat[index][i]; 
       }
        
-      //variables to record daily information in a state of the world     
+    // 4.2 - declare the state variables and decision variable (usevars)      
       int i;
-      double *lake_stateX = new double [nDays];
-      double * benefit    = new double [nDays];
-      double * poll       = new double [nDays];
-      double * phos       = new double [nDays];
-      double * pol_flow   = new double [nDays];
-      double * usevars    = new double [nDays];
-      double * change_dec = new double [nDays - 1];
+      double * lake_stateX = new double [nDays];
+      double * benefit     = new double [nDays];
+      double * poll        = new double [nDays];
+      double * phos        = new double [nDays];
+      double * pol_flow    = new double [nDays];
+      double * usevars     = new double [nDays];
+      double * change_dec  = new double [nDays - 1];
      
-    //initialize those variables
+    // opt 4.3 - initialize variables
       for (i=0; i < nDays; i++)
 	       { lake_stateX[i] = 0.0;
 	         benefit[i]     = 0.0;
@@ -143,80 +158,68 @@ void lake_problem(double* vars, double* objs, double* consts)
 	         usevars[i]     = 0.0;
 	        }
 
-    //initiliaze the variable for recording the inertia between time periods
-  for (i=0; i < (nDays -1); i++)
-  {
-    change_dec[i] = 0.0;
-  }
-            
-      //assigning 'nYears/interval' decision vectors to 'nYears' years
-      for (i=0; i<nDays; i++)
-	{
-	  //int pos = floor(i/interval);
-	  usevars[i] = vars[i];
-    //calculate the change in decison variables from one time step to 
-    //the next to determine inertia
-    if (i>0)
-    {
-      change_dec[i-1] = vars[i]-vars[i-1];
-    }
-	}   
+      for (i=0; i < (nDays -1); i++)
+		  {
+			change_dec[i] = 0.0;
+		  }
 
+            
+      for (i=0; i<nDays; i++) 
+	  {
+		usevars[i] = vars[i];	 
+	// opt 4.4 - calculate the change in decision variables from one time step to 
+	//       the next to determine inertia .
+		if (i>0) change_dec[i-1] = vars[i]-vars[i-1];
+
+	  }   
   
-      //now add natural pollution
+    // opt 4.5 - now add natural pollution
       for (i=0; i < nDays; i++)
 	    {
-	        pol_flow[i]    = usevars[i]  + nat_flow[i];
+	        pol_flow[i] = usevars[i] + nat_flow[i];
 	    }
 
-      //round off to the required precision
+      // round off to the required precision
       for (i=0; i<nDays; i++)
 	    {
 	       pol_flow[i] = round(pol_flow[i]*pow(10,(double)precis))/(pow(10,(double)precis));
 	       usevars[i]  = round(usevars[i]*pow(10,(double)precis))/(pow(10,(double)precis));
-   
 	    }
 
       for (i=0; i<(nDays-1); i++)
-      {
-        change_dec[i] = round(change_dec[i]*pow(10,(double)precis))/(pow(10,(double)precis)); //round to required precis
+        {
+           change_dec[i] = round(change_dec[i]*pow(10,(double)precis))/(pow(10,(double)precis)); //round to required precise
+        }
 
-      }
 
-
-    //implement the lake model from Carpenter et al. 1999
+    // opt 4.6 - implementation of the lake model ( see Carpenter et al. 1999 )
+	
       for (i=0; i<nDays; i++)
 	    {
+		   // update the state variables 
 	       if (i==0)
 	        {
 	          lake_stateX[i] = passInitX*(1-b)+pow(passInitX,q)/(1+pow(passInitX,q))+pol_flow[i];
-            oftime1[i] = oftime1[i] + lake_stateX[i];
-	        }
-	       else
+              oftime1[i]     = oftime1[i] + lake_stateX[i];
+	        }else
 	       {
 	          lake_stateX[i] = lake_stateX[i-1]*(1-b)+(pow(lake_stateX[i-1], q))/(1+pow(lake_stateX[i-1],q))+pol_flow[i];
-            oftime1[i] = oftime1[i] + lake_stateX[i];
+              oftime1[i]     = oftime1[i] + lake_stateX[i];
 	        }
-	  
+
 	      benefit[i] = alpha*usevars[i];
-	      phos[i]    = beta*pow(lake_stateX[i],2);
+	      phos[i]    = beta*pow(lake_stateX[i], 2);
 	      poll[i]    = alpha*usevars[i];	    
 	    }
-
       
-
-      
-      //sum daily values over 100 days for each state of the world
+    // opt 4.7 - update the step indicators for each samples 
+	
       for (i=0; i<nDays; i++)
 	    {
-        
-        //leave the rest in preparation for expected values
-	         ofs2[sample] = ofs2[sample] + benefit[i]*pow(delta,(i)); 
-	      
+		  ofs2[sample] = ofs2[sample] + benefit[i]*pow(delta,(i)); 	     
 	      //estimate the reliability matrix
-	      if (lake_stateX[i]<pcrit)
-	         ofs3[sample] = ofs3[sample]+1;
-
+	      if (lake_stateX[i] < pcrit)
+	         ofs3[sample] = ofs3[sample] + 1;
 	    }
      
        for (i=0; i<(nDays-1); i++) 
@@ -224,11 +227,10 @@ void lake_problem(double* vars, double* objs, double* consts)
           //estimate the inertia matrix
           if (change_dec[i] > inertia_thres)
           ofs4[sample] = ofs4[sample]+1;
-        }
+        }      
 
-      //ofs1[sample] = ofs1[sample]/nDays; do not do this for min-max
-      
-
+	// opt 4.8 - clear memory 
+ 	
       delete [] lake_stateX;
       delete [] benefit;
       delete [] poll;
@@ -239,61 +241,58 @@ void lake_problem(double* vars, double* objs, double* consts)
       delete [] change_dec;
     }
 
-    //create dummy variables for running tally of values summed over all samples
-  double dumofs1 = -9999;//initialize to unfeasibly low value for future search for maximum
+  // opt 5 - create dummy variables for running tally of values summed over all samples
+  
+  double dumofs1 = -9999;//initialize to infeasibly low value for future search for maximum
   double dumofs2 = 0.0;
   double dumofs3 = 0.0;
   double dumofs4 = 0.0;
 
-  for(int day=0;day<nDays;day++)
+  for(int day=0; day<nDays; day++)
   {
-    oftime1[day]=oftime1[day]/samples;
+    oftime1[day] = oftime1[day]/samples; // mean ? 
   }
 
   for(int day=0;day<nDays;day++)
   {
     if(oftime1[day]>dumofs1)
-      dumofs1 = oftime1[day];
+      dumofs1 = oftime1[day]; // max concentration? 
   }
 
   for (int sample=0;sample<samples;sample++)
-    {
-
-      dumofs2  = dumofs2 + ofs2[sample];   //Benefit of pollution
-      dumofs3  = dumofs3 + ofs3[sample];   //reliability estimator
-      dumofs4 = dumofs4 + ofs4[sample];   // inertia estimator
+   {
+    dumofs2  = dumofs2 + ofs2[sample];   // Benefit of pollution
+    dumofs3  = dumofs3 + ofs3[sample];   // Reliability estimator
+    dumofs4  = dumofs4 + ofs4[sample];   // Inertia estimator
    }
 
-  //Calculate objectives
-  objs[0] = dumofs1;  //maximum daily phosphorus averaged over states of world
+  // opt 6 - Calculate objectives
+  objs[0] = dumofs1;          //maximum daily phosphorus averaged over states of world
   objs[1] = dumofs2/samples;  //expected benefit from pollution
   
   double prob_inertia_maintained = dumofs4/((nDays - 1)*samples);
+  
   if (prob_inertia_maintained > 1)
     exit(EXIT_FAILURE);
 
   objs[2] = prob_inertia_maintained;  //probability inertia stays below threshold
 
-
   double reliability  = dumofs3/(nDays*samples);
   if (reliability>1)
     exit(EXIT_FAILURE);
 
-   if (reliability>reliab_thres)
-    consts[0]= 0.0;
-  else
-    consts[0] = reliab_thres-reliability;
-
+  if (reliability>reliab_thres){
+     consts[0]= 0.0;
+  }else{
+   consts[0] = reliab_thres-reliability;
+  }
+  
   objs[3]  = reliability; //probability the lake is not tipped
   
-
-  
-  objs[0]    = objs[0];      //want to minimize phosphorous in the lake
+  objs[0]    =  objs[0];     //want to minimize phosphorous in the lake
   objs[1]    = -objs[1];     //want to maximize expected benefit from pollution
   objs[2]    = -objs[2];     //want to maximize the probability of maintaining inertia
   objs[3]    = -objs[3];     //want to maximize reliability
-
-
 
   delete [] oftime1;
   delete [] ofs2;
@@ -302,15 +301,19 @@ void lake_problem(double* vars, double* objs, double* consts)
 
 }
 
+// ********************
+
 int main(int argc, char* argv[]) 
 {
   nvars   = nDays;
   nobjs   = 4;
   nconsts = 1;
   
-  for (int i=0;i<10000;i++)//this is 10,000 to match nat_flowmat's size
-    for (int j=0;j<nDays;j++)
+  for (int i=0;i<10000;i++){   //this is 10,000 to match nat_flowmat's size
+    for (int j=0;j<nDays;j++){
       nat_flowmat[i][j] = 0.0; 
+	}
+  }
   
   FILE * myfile;
   myfile = fopen("SOWs_Type6.txt","r");
@@ -318,9 +321,9 @@ int main(int argc, char* argv[])
   int linenum =0;
   int maxSize =5000;
   
-  if (myfile==NULL) perror("Error opening file");
-  else 
-    {
+  if (myfile==NULL){
+    perror("Error opening file");
+  }else{
       char buffer [maxSize];
       while ( fgets(buffer, maxSize, myfile)!=NULL) 
 	     { linenum++;
@@ -339,6 +342,7 @@ int main(int argc, char* argv[])
 	        }
 	      }
     }
+	
   fclose(myfile);
   
   double vars[nvars];

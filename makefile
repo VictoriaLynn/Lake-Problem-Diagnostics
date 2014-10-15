@@ -24,8 +24,8 @@ libmoea.a: moeaframework.c moeaframework.h
 LakeProblem4obj_control: libmoea.a LakeProblem_4obj_1const_Control.cpp
 	$(CC2) $(FLAGS) -o LakeProblem4obj_control LakeProblem_4obj_1const_Control.cpp -L. -lmoea $(LIBS)
 
-Random1000SOWs: libmoea.a Random1000SOWs.cpp
-	$(CC2) $(FLAGS) -I ../../../boost_1_56_0 -o Random1000SOWs Random1000SOWs.cpp -L. -lmoea $(LIBS)
+Random1000SOWs: Random1000SOWs.cpp
+	$(CC2) $(FLAGS) -I ../../../boost_1_56_0 -o Random1000SOWs Random1000SOWs.cpp -L. $(LIBS)
 
-BorgExec: libmoea.a borg.c borg.h
-	${CC} ${FLAGS} -o BorgExec frontend.c borg.c mt19937ar.c -L. -lmoea $(LIBS)
+BorgExec: borg.c borg.h
+	${CC} ${FLAGS} -o BorgExec frontend.c borg.c mt19937ar.c -L. $(LIBS)

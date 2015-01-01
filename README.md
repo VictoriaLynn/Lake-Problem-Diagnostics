@@ -9,7 +9,7 @@ Contents:
 that may be specified on line 316 of the lake model code
 * `moeaframework.c` and `moeaframework.h`: provides methods included in the LakeProblem C++ code for use with the MOEAFramework. 
 These are necessary to compile the code as written. 
-*`reference-sets`: Folder containing the best known reference sets for optimization to each of the two distributions tested in my study.  Each result file contains the 100 decision variable values and values of the four objectives for each non-dominated solution.
+* `reference-sets`: Folder containing the best known reference sets for optimization to each of the two distributions tested in my study.  Each result file contains the 100 decision variable values and values of the four objectives for each non-dominated solution.
 
 To compile and run:
 

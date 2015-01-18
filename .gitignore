@@ -2,4 +2,4 @@ borg.*
 mt19937.*
 *.a
 *.exe
-frontend.c .Rhistory .Rproj .R .Rproj.user 
+frontend.c*.Rhistory*.Rproj*.R*.Rproj.user 

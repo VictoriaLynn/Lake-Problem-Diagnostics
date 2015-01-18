@@ -7,9 +7,9 @@ Copyright (C) 2014-2015 Victoria Ward, Riddhi Singh and Pat Reed. Intended for u
 This study focused on the 4 objective formulation of the classic environmental economics Lake Problem.  Simulation code is available in the main folder of this repository.  This folder provides the source code for my diagnostics and instructions to replicate my experiment.  I used version 2.1 of the MOEA Framework, which was the most current version at the time. 
 
 Contents:
-* params/: MOEA parameters to be sampled for each algorithm
-* Java files: to define the Lake problem for MOEAFramework, calculate Hypervolume, and analyze attainment
-* Bash scripts: to run the comparative study using the MOEAFramework, delete decision variables, fix empty sets in objective files, and analyze attainment 
+* `params/:` MOEA parameters to be sampled for each algorithm
+* `Java files:` to define the Lake problem for MOEAFramework, calculate Hypervolume, and analyze attainment
+* `Bash scripts:` to run the comparative study using the MOEAFramework, delete decision variables, fix empty sets in objective files, and analyze attainment 
 
 To compile and run:
 

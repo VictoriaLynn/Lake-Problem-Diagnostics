@@ -19,7 +19,7 @@ To compile and run:
 
 * Download the [Borg](http://borgmoea.org/) source code.  Put all Borg and Lake Source in the examples subdirectory of the MOEAFramework directory.
 
-* Compile the Lake Problem Model: `cd MOEA\ Framework/MOEAFramework-2.1/examples && make -f MakefileLake`
+* Compile the Lake Problem Model: `cd MOEA\ Framework/MOEAFramework-2.1/examples && make`
 
 * Move the Borg and Lake Problem executables into the main directory: `mv LakeProblem BorgExec ../../../`
 

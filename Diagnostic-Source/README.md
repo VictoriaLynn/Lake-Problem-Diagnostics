@@ -15,15 +15,15 @@ To compile and run:
 
 * Make sure you have [MOEAFramework](http://www.moeaframework.org). Download the "all-in-one executable" and put the .jar file in the main directory of this project.
 
-*Download the source code for the MOEAFramework for compilation.
+* Download the source code for the MOEAFramework for compilation.
 
-*Download the [Borg](http://borgmoea.org/) source code.  Put all Borg and Lake Source in the examples subdirectory of the MOEAFramework directory.
+* Download the [Borg](http://borgmoea.org/) source code.  Put all Borg and Lake Source in the examples subdirectory of the MOEAFramework directory.
 
 * Compile the Lake Problem Model: `cd MOEA\ Framework/MOEAFramework-2.1/examples && make -f MakefileLake`
 
 * Move the Borg and Lake Problem executables into the main directory: `mv LakeProblem BorgExec ../../../`
 
-*Also keep the Lake Problem executable in an exambles subdirectory of the main directory for the Framework optimization
+* Also keep the Lake Problem executable in an exambles subdirectory of the main directory for the Framework optimization
 	
 * Compile the Java problem stub as shown below. 
 
@@ -35,18 +35,18 @@ Before doing this, one will need to delete decision variables from the set files
 to .obj files.  Some of these had empty sets, which were not represented at all, making it necessary to use 'sh fix_empty_sets.sh' before generating 
 local reference sets. 
 
-*Once you have generated metrics for all parameterizations (both the average across all seeds and the metrics for a local reference set), you may need
+* Once you have generated metrics for all parameterizations (both the average across all seeds and the metrics for a local reference set), you may need
 to account for infinities and NaNs in the .average and .localref.metrics files.  I used `sh replace_infinities.sh` for local reference metrics
 and `sh replace_NaNs.sh` for average metrics to replace infinities with very large numbers.  This was necessary for attainment calculations as the 
 script for that only evaluates numbers.  A very large number was considered safe as it would still indicate the algorithm had not attained a certain level
 in those instances.  NaNs and Infinities only appeared for metrics whose ideal value was 0. 
 
-*Before evaluating attainment, you will need to calculate the hypervolume of the global reference set to normalize the hypervolume for each 
+* Before evaluating attainment, you will need to calculate the hypervolume of the global reference set to normalize the hypervolume for each 
 parameterization.
 `javac -cp MOEAFramework-<VERSION>-Executable.jar HypervolumeEval.java` 
 `java -cp MOEAFramework-<VERSION>-Executable.jar HypervolumeEval myLake4ObjStoch.reference`
 
-*Then insert this value into Analysis_Attainment_LakeProblem.sh where appropriate, compile AWRAnalysis.java, and
+* Then insert this value into Analysis_Attainment_LakeProblem.sh where appropriate, compile AWRAnalysis.java, and
 run the attainment analysis.
 `javac -cp MOEAFramework-<VERSION>-Executable.jar AWRAnalysis.java`
 `sh Analysis_Attainment_LakeProblem.sh`

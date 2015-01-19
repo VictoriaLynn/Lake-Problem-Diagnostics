@@ -1,6 +1,6 @@
 ### Lake Problem Training (C++)
 
-Copyright (C) 2014-2015 Victoria Ward, Riddhi Singh and Pat Reed. Intended for use with MOEAFramework and Borg. Licensed under the GNU Lesser General Public License.
+Copyright (C) 2014-2015 Victoria Ward, Riddhi Singh, Pat Reed, and Klaus Keller. Intended for use with MOEAFramework and Borg. Licensed under the GNU Lesser General Public License.
 
 Contents: 
 * `LakeProblem_4obj_1const_Control.cpp`: C++ source code for the 4 objective formulation
@@ -10,6 +10,7 @@ that may be specified on line 316 of the lake model code
 * `moeaframework.c` and `moeaframework.h`: provides methods included in the LakeProblem C++ code for use with the MOEAFramework. 
 These are necessary to compile the code as written. 
 * `reference-sets`: Folder containing the best known reference sets for optimization to each of the two distributions tested in my study.  Each result file contains the 100 decision variable values and values of the four objectives for each non-dominated solution.
+* `Diagnostic-Source`: Folder containing the source code for benchmarking algorithm performance on this problem.  A walkthrough is provided at https://waterprogramming.wordpress.com/2015/01/19/algorithm-diagnostics-walkthrough-using-the-lake-problem-as-an-example-part-1-of-3-generate-pareto-approximate-fronts/.
 
 To compile and run:
 

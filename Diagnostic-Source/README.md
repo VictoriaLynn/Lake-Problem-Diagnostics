@@ -2,9 +2,9 @@ Multi-Objective Lake Problem Optimization Benchmark
 ==========================
 Diagnostic Commands
 --------------------------
-Copyright (C) 2014-2015 Victoria Ward, Riddhi Singh and Pat Reed. Intended for use with [MOEAFramework](http://www.moeaframework.org) and [Borg](http://borgmoea.org). Licensed under the GNU Lesser General Public License.
+Copyright (C) 2014-2015 Victoria Ward, Riddhi Singh, Pat Reed, and Klaus Keller. Intended for use with [MOEAFramework](http://www.moeaframework.org) and [Borg](http://borgmoea.org). Licensed under the GNU Lesser General Public License.
 
-This study focused on the 4 objective formulation of the classic environmental economics Lake Problem.  Simulation code is available in the main folder of this repository.  This folder provides the source code for my diagnostics and instructions to replicate my experiment.  I used version 2.1 of the MOEA Framework, which was the most current version at the time. 
+This study focused on the 4 objective formulation of the classic environmental economics Lake Problem.  Simulation code is available in the main folder of this repository.  This folder provides the source code for my diagnostics and instructions to replicate my experiment.  I used version 2.1 of the MOEA Framework, which was the most current version at the time.  
 
 Contents:
 * `params/`: MOEA parameters to be sampled for each algorithm
@@ -30,7 +30,7 @@ To compile and run:
 	`javac -classpath MOEAFramework-<VERSION>-Executable.jar myLake4ObjStoch.java`
 
 * `Perform comparative study`: `Lake_Problem_Comparative_Study.sh` contains all the necessary steps for the study; however, it may be necessary to 
-break the file up.  My actual study had that script broken into 9 different parts.  The biggest concern is generating local reference sets.
+break the file up.  My actual study had that script broken into 9 different parts as shown in https://waterprogramming.wordpress.com/2015/01/19/algorithm-diagnostics-walkthrough-using-the-lake-problem-as-an-example-part-1-of-3-generate-pareto-approximate-fronts/.  The biggest concern is generating local reference sets.
 Before doing this, one will need to delete decision variables from the set files produced by optimization `sh delete_dec_vars.sh`.  I saved the output 
 to .obj files.  Some of these had empty sets, which were not represented at all, making it necessary to use `sh fix_empty_sets.sh` before generating 
 local reference sets. 

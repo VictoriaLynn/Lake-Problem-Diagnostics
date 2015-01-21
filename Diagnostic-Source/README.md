@@ -10,6 +10,7 @@ Contents:
 * `params/`: MOEA parameters to be sampled for each algorithm
 * `Java files`: to define the Lake problem for MOEAFramework, calculate Hypervolume, and analyze attainment
 * `Bash scripts`: to run the comparative study using the MOEAFramework, delete decision variables, fix empty sets in objective files, and analyze attainment 
+* `Statistical_Tests_MannWhitney_KruskalWallis.m`: to determine if the results of the diagnostics are different at a statistically significant level.  See https://waterprogramming.wordpress.com/2014/08/27/determining-whether-differences-in-diagnostic-results-are-statistically-significant-part-1/ for more information.
 
 To compile and run:
 

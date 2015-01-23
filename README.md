@@ -1,6 +1,7 @@
-### Lake Problem Training (C++)
+### Lake Problem Diagnostics (C++, Matlab, Bash)
+This repository contains all of the code used for the study described in the following paper: Ward, V.L., R. Singh, P.M. Reed, and K. Keller (In Review), Confronting Tipping Points: How Well Can Multi-Objective Evolutionary Algorithms Support the Management of Environmental Thresholds?, Journal of Environmental Modelling and Software. 
 
-Copyright (C) 2014-2015 Victoria Ward, Riddhi Singh, Pat Reed, and Klaus Keller. Intended for use with MOEAFramework and Borg. Licensed under the GNU Lesser General Public License.
+Intended for use with MOEAFramework and Borg. Licensed under the GNU Lesser General Public License.
 
 Contents: 
 * `LakeProblem_4obj_1const_Control.cpp`: C++ source code for the 4 objective formulation
@@ -29,3 +30,4 @@ To compile and run:
 Also, note if running these on thecube the executable names will not end in ".exe".  Otherwise, they will remain the same. 
 
 
+Copyright (C) 2014-2015 Victoria Ward, Riddhi Singh, Pat Reed, and Klaus Keller.

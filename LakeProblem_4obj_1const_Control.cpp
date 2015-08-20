@@ -1,4 +1,4 @@
-/* LakeProblem_5Obj_1Const_Stoch.cpp
+/* LakeProblem_4Obj_1Const_Stoch.cpp
    
    Riddhi Singh, May, 2014
    The Pennsylvania State University

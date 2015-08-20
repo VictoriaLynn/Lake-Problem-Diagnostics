@@ -1,5 +1,5 @@
 ### Lake Problem Diagnostics (C++, Matlab, Bash)
-This repository contains all of the code used for the study described in the following paper: Ward, V.L., R. Singh, P.M. Reed, and K. Keller (In Review), Confronting Tipping Points: How Well Can Multi-Objective Evolutionary Algorithms Support the Management of Environmental Thresholds?, Journal of Environmental Modelling and Software. 
+This repository contains all of the code used for the study described in the following paper: Ward, V.L., R. Singh, P.M. Reed, and K. Keller, "Confronting Tipping Points: How Well Can Multi-Objective Evolutionary Algorithms Support the Management of Environmental Thresholds?", Environmental Modelling and Software, v73, 27-43, doi:10.1016/j.envsoft.2015.07.020, 2015.
 
 Intended for use with MOEAFramework and Borg. Licensed under the GNU Lesser General Public License.
 
